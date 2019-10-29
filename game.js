@@ -68,20 +68,20 @@ function draw(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     gravity();
     dx = dxSpeed();
-    wallCollision();
+    // wallCollision();
     jump();
-    var didCollide = groundCollision();
+    // var didCollide = groundCollision();
     // headCollision();
-    wallCollision();
+    // wallCollision();
     capJump();
     player.y+=dy;
-    if(!didCollide[0]){
-    } else {
-        if(dy > 0){
-            player.y = didCollide[1].y-player.width;
-            notDoubleJumped = true;
-        }
-    }
+    // if(!didCollide[0]){
+    // } else {
+    //     if(dy > 0){
+    //         player.y = didCollide[1].y-player.width;
+    //         notDoubleJumped = true;
+    //     }
+    // }
     // console.log("Dx",dx);
     player.x += dx;
     changeMode();
@@ -114,41 +114,41 @@ function drawLevel(){
         context.closePath();
     }
 }
-function wallCollision(){
-    for(var i = 0; i < level.length;i++){
-        if(player.y  + player.height > level[i].y && player.x + player.width+ dx > level[i].x
-            && player.y <level[i].y +level[i].height && player.x + dx < level[i].x + level[i].width ) {
-            // let a = level[i].x-(player.x+player.width);
-            console.log("Two values: ",((player.x+player.width)-level[i].x),((level[i].x+level[i].width)-player.x));
-            dx = Math.min(((player.x+player.width)-level[i].x),((level[i].x+level[i].width)-player.x));
-            // player.x = level[i].x -  player.width;
-        }
-        // else if(player.y + dy > level[i].y && player.x + dx < level[i].x + level[i].width
-        //     && player.y + player.height +dy <level[i].y +level[i].height  && player.x + player.width+ dx > level[i].x) {
-        //     dx = ((player.x+player.width)-level[i].x);
-        // }
-    }
-}
-function groundCollision(){
-    for(var i = 0; i < level.length;i++){
-        if(player.y + player.height + dy > level[i].y && player.x + player.width+ dx > level[i].x &&
-        player.x  + dx < level[i].x + level[i].width) {
-            grounded = true;
-            return [true, level[i]];
-        }
-    }
-    grounded = false;
-    return [false,0];
-}
-function headCollision(){
-    console.log("head collision");
-    for(var i = 0; i < level.length;i++){
-        if(player.y + dy < level[i].y + level[i].height && player.x + player.width+ dx > level[i].x &&
-            player.x  + dx < level[i].x + level[i].width && player.y + player.height + dy > level[i].y) {
-            dy = (player.y - (level[[i].y+level[i].height]));
-        }
-    }
-}
+// function wallCollision(){
+//     for(var i = 0; i < level.length;i++){
+//         if(player.y  + player.height > level[i].y && player.x + player.width+ dx > level[i].x
+//             && player.y <level[i].y +level[i].height && player.x + dx < level[i].x + level[i].width ) {
+//             // let a = level[i].x-(player.x+player.width);
+//             console.log("Two values: ",((player.x+player.width)-level[i].x),((level[i].x+level[i].width)-player.x));
+//             dx = Math.min(((player.x+player.width)-level[i].x),((level[i].x+level[i].width)-player.x));
+//             // player.x = level[i].x -  player.width;
+//         }
+//         // else if(player.y + dy > level[i].y && player.x + dx < level[i].x + level[i].width
+//         //     && player.y + player.height +dy <level[i].y +level[i].height  && player.x + player.width+ dx > level[i].x) {
+//         //     dx = ((player.x+player.width)-level[i].x);
+//         // }
+//     }
+// }
+// function groundCollision(){
+//     for(var i = 0; i < level.length;i++){
+//         if(player.y + player.height + dy > level[i].y && player.x + player.width+ dx > level[i].x &&
+//         player.x  + dx < level[i].x + level[i].width) {
+//             grounded = true;
+//             return [true, level[i]];
+//         }
+//     }
+//     grounded = false;
+//     return [false,0];
+// }
+// function headCollision(){
+//     console.log("head collision");
+//     for(var i = 0; i < level.length;i++){
+//         if(player.y + dy < level[i].y + level[i].height && player.x + player.width+ dx > level[i].x &&
+//             player.x  + dx < level[i].x + level[i].width && player.y + player.height + dy > level[i].y) {
+//             dy = (player.y - (level[[i].y+level[i].height]));
+//         }
+//     }
+// }
 function drawPlayer(){
     context.beginPath();
     context.rect(player.x, player.y, player.width, player.height);
