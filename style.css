@@ -1,0 +1,65 @@
+
+/*
+ Animated gradient background from:
+ https://codepen.io/P1N2O/pen/pyBNzX
+ */
+/*body{*/
+/*    margin: 0;*/
+/*    width: 100%;*/
+/*    height: 100vh;*/
+/*    font-family: "Exo", sans-serif;*/
+/*    color: #fff;*/
+/*    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);*/
+/*    background-size: 400% 400%;*/
+/*    animation: gradientBG 15s ease infinite;*/
+/*}*/
+/*@keyframes gradientBG {*/
+/*    0% {*/
+/*        background-position: 0% 50%;*/
+/*    }*/
+/*    50% {*/
+/*        background-position: 100% 50%;*/
+/*    }*/
+/*    100% {*/
+/*        background-position: 0% 50%;*/
+/*    }*/
+/*}*/
+
+* { padding: 0; margin: 0; }
+canvas { background: #eee; display: block; margin: 0 auto; }
+
+ul.MenuBarHorizontal {
+    margin-top:0;
+    background: #444444;
+    height: 30px;
+    width: 90%;
+    padding: 0 5%;
+}
+
+ul.MenuBarHorizontal > li {
+    float: left;
+    position: relative;
+}
+
+ul.MenuBarHorizontal ul {
+    background: #333333;
+    display: none;
+    position: absolute;
+    left: 0; top: 100%;
+}
+
+ul.MenuBarHorizontal a {
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    color: #FFF;
+    line-height: 30px;
+    padding: 0 5px;
+}
+
+ul.MenuBarHorizontal li { list-style: none; }
+
+ul.MenuBarHorizontal li:hover { background: #555;  }
+ul.MenuBarHorizontal li:hover ul { display: block;  }
+/* this is the style I use. Put in external css file and link the 3 html files to it */
+
