@@ -6,6 +6,7 @@
     $selectedQuarter = "blank";
     $checked = false;
     $passwordSimilarity = "";
+    $alert = "";
     $nameErr = $emailErr = $passwordErr = $confirmErr = $quarterErr = $checkedErr = $commentErr = "";
 //    $disabled = true;
     $midtermForm = "Submit Contact Form";
@@ -63,6 +64,7 @@
         global $name, $email, $password, $confirm, $message, $list, $arrayList,
                $selectedQuarter, $checked, $passwordSimilarity, $midtermForm, $classes, $count, $comment, $nameErr,
                $emailErr, $passwordErr, $confirmErr, $quarterErr, $checkedErr, $commentErr, $errors;
+        $nameErr = $emailErr = $passwordErr = $confirmErr = $quarterErr = $checkedErr = $commentErr = "";
         if(empty($_POST['firstName'])){
             $nameErr = "Missing name field. \n";
             $errors = true;
@@ -146,8 +148,9 @@
                 $summary .= $classes[$i] . "<br>";
             }
             $summary .= "<br>";
-            echo $summary;
-
+//            echo $summary;
+            header('Location: thankYou.php?confirmMsg='.urlencode($summary));
+            return "Success!" . $summary;
         } else {
             return "Please correct the errors listed above";
         }
@@ -189,7 +192,7 @@
             changeElem.setAttribute('id','li'+(i-1));
             changeElem.innerHTML = '<label for="' + newId + '">Class:</label><input type = "test"' +
                 'name = "experience[]" id = "' + newId + '"value="' + oldElem.value + '"><button type = "button" class = "delete" ' +
-                'onClick="deleteThisField('+ "'" +(i-1) + "'" +')" >Delete class</button>><span class="error"></span><br>';
+                'onClick="deleteThisField('+ "'" +(i-1) + "'" +')" >Delete class</button><span class="error"></span><br>';
         }
         count--;
         var newId = "experience"+(count-1);
@@ -286,6 +289,9 @@
 </script>
 
 <div class="part1">
+
+    <?php echo '<span class="error">'.$alert.'</span>';?>
+
     <h2 id="midtermForm">
         <?php echo $midtermForm;?>
     </h2>
@@ -314,11 +320,11 @@
         <span class="error"> <?php echo $confirmErr;?></span>
 
         <label for="selectQuarter"></label><select name = "selectQuarter" onchange="checkSelect(this.value)" id="selectQuarter">
-            <option <?php if($selectedQuarter=="blank")      echo 'selected="selected"'; ?>name="blank" value="blank">Please select</option>
-            <option <?php if($selectedQuarter=="winter")      echo 'selected="selected"'; ?>name="winter" value="winter">Winter</option>
-            <option <?php if($selectedQuarter=="spring")      echo 'selected="selected"'; ?>name="spring" value="spring">Spring</option>
-            <option <?php if($selectedQuarter=="summer")      echo 'selected="selected"'; ?>name="summer" value="summer">Summer</option>
-            <option <?php if($selectedQuarter=="fall")      echo 'selected="selected"'; ?>name="fall" value="fall">Fall</option>
+            <option <?php if($selectedQuarter=="blank")      echo 'selected="selected" '; ?>id="blank" value="blank">Please select</option>
+            <option <?php if($selectedQuarter=="winter")      echo 'selected="selected" '; ?>id="winter" value="winter">Winter</option>
+            <option <?php if($selectedQuarter=="spring")      echo 'selected="selected" '; ?>id="spring" value="spring">Spring</option>
+            <option <?php if($selectedQuarter=="summer")      echo 'selected="selected" '; ?>id="summer" value="summer">Summer</option>
+            <option <?php if($selectedQuarter=="fall")      echo 'selected="selected" '; ?>id="fall" value="fall">Fall</option>
         </select>
         <span class="error"> <?php echo $quarterErr;?></span>
         <div class="part2">
@@ -330,7 +336,7 @@
         <span class="error"><?php echo $checkedErr;?></span>
         <p>Message:<br>
             <textarea id="comment" name="comment" ><?php echo $comment;?></textarea></p>
-            <span class="error"><?php echo $commentErr;?></span>
+        <span class="error"><?php echo $commentErr;?></span>
         <p>
             <input type="button" onclick="clearForm()" value="Clear Form" />
             <input type="submit" name="Submit" onclick="checkForm()" value="Send Form" id="mySubmit" >
