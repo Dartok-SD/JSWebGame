@@ -13,7 +13,7 @@ function customMenu() {
             console.log("FFF");
         }
     } if (foundIt === false) {
-        document.getElementById("index").style.color = "#BBB";
-        console.log("Did not find it");
+        // document.getElementById("index").style.color = "#BBB";
+        // console.log("Did not find it");
     }
 }
