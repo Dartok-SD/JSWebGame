@@ -56,9 +56,9 @@ function keyUpHandler(e) {
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-var STICKY_THRESHOLD = 0.0004
-var ground = {x:0, y:425, width: canvas.width, height: 30, mode:-1, restitution:0.2};
-var level = [ground,{x : 200, y:350, width: 90, height: 30, mode:-1, restitution:0.2},
+var STICKY_THRESHOLD = 0.004;
+var ground = {x:0, y:425, width: canvas.width, height: 50, mode:-1, restitution:0.1};
+var level = [ground,{x : 200, y:350, width: 90, height: 50, mode:-1, restitution:0.2},
     {x:350,y:350,width:50,height:100, mode:-1, restitution:0.2}, {x:550, y:350,width:100,height:100, mode:-1, restitution:0.2},
     {x:350,y:250,width:50,height:100,mode:0, restitution:0.2}];
 // var y = 400;
@@ -82,13 +82,14 @@ function draw(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     gravity();
     userInteraction();
-    collisionDetection();
-    // console.log("DY: " + dy);
     player.y+=dy;
     player.x += dx;
-    if(grounded){
-        console.log("Grounded");
-    }
+    collisionDetection();
+    // console.log("DY: " + dy);
+
+    // if(grounded){
+    //     console.log("Grounded");
+    // }
     drawGround();
     drawLevel();
     drawPlayer();
@@ -110,8 +111,22 @@ function capJump(){
 function collisionDetection(){
     for(let i = 0; i < level.length;i++){
         if(collisionTest(player,level[i])){
-            // console.log("Collision Detected");
+            // console.log("Collision Detected with " + i);
+            var l1 = player.x;
+            var t1 = player.y;
+            var r1 = player.x+player.width;
+            var b1 = player.y+player.height;
+
+            var l2 = level[i].x;
+            var t2 = level[i].y;
+            var r2 = level[i].x+level[i].width;
+            var b2 = level[i].y+level[i].height;
+            // console.log(b1 < t2);
+            // console.log(b1);
+            // console.log(t2);
+            // console.log("Old velocity: dx " + dx + " dy " + dy);
             collisionResolution(level[i]);
+            // console.log("New velocity: dx " + dx + " dy " + dy);
         }
     }
 }
@@ -126,17 +141,17 @@ function collisionTest(object1, object2){
     var r2 = object2.x+object2.width;
     var b2 = object2.y+object2.height;
 
-    return !(b1 < t2 || t1 > b2 || r1 < l2 || l1 > r2);
+    return !(b1 <= t2 || t1 >= b2 || r1 <= l2 || l1 >= r2);
 
 }
 function collisionResolution(entity){
-    var pMidX = player.x + player.width/2;
-    var pMidY = player.y + player.height/2;
-    var aMidX = entity.x + entity.width/2;
-    var aMidY = entity.y + entity.height/2;
+    var pMidX = player.x + player.width*.5;
+    var pMidY = player.y + player.height*.5;
+    var aMidX = entity.x + entity.width*.5;
+    var aMidY = entity.y + entity.height*.5;
 
-    var normalX = (aMidX - pMidX)/(entity.width/2);
-    var normalY = (aMidY - pMidY)/(entity.height/2);
+    var normalX = (aMidX - pMidX)/(entity.width*.5);
+    var normalY = (aMidY - pMidY)/(entity.height*.5);
 
     var absDX = Math.abs(normalX);
     var absDY = Math.abs(normalY);
@@ -146,12 +161,14 @@ function collisionResolution(entity){
         if (normalX < 0) {
 
             // Set the player x to the right side
+            console.log("A");
             player.x = entity.x + entity.width;
 
             // If the player is approaching from negative X
         } else {
 
             // Set the player x to the left side
+            console.log("B");
             player.x = entity.x - player.width;
         }
 
@@ -160,33 +177,35 @@ function collisionResolution(entity){
 
             // Set the player y to the bottom
             player.y = entity.y + entity.height;
-
+            // dy = 0;
+            console.log("C");
             // If the player is approaching from negative Y
         } else {
 
             // Set the player y to the top
             player.y = entity.y - player.height;
-            grounded = true;
+            // grounded = true;
+            console.log("D");
         }
 
-        // Randomly select a x/y direction to reflect velocity on
-        if (Math.random() < .5) {
-
-            // Reflect the velocity at a reduced rate
-            dx = -dx * entity.restitution;
-
-            // If the objectâ€™s velocity is nearing 0, set it to 0
-            // STICKY_THRESHOLD is set to .0004
-            if (Math.abs(dx) < STICKY_THRESHOLD) {
-                dx = 0;
-            }
-        } else {
-
-            dy = -dy * entity.restitution;
-            if (Math.abs(dy) < STICKY_THRESHOLD) {
-                dy = 0;
-            }
-        }
+        // // Randomly select a x/y direction to reflect velocity on
+        // if (Math.random() < .5) {
+        //
+        //     // Reflect the velocity at a reduced rate
+        //     dx = -dx * entity.restitution;
+        //
+        //     // If the objectâ€™s velocity is nearing 0, set it to 0
+        //     // STICKY_THRESHOLD is set to .0004
+        //     if (Math.abs(dx) < STICKY_THRESHOLD) {
+        //         dx = 0;
+        //     }
+        // } else {
+        //
+        //     dy = -dy * entity.restitution;
+        //     if (Math.abs(dy) < STICKY_THRESHOLD) {
+        //         dy = 0;
+        //     }
+        // }
 
         // If the object is approaching from the sides
     } else if (absDX > absDY) {
@@ -194,14 +213,21 @@ function collisionResolution(entity){
         // If the player is approaching from positive X
         if (normalX < 0) {
             player.x = entity.x + entity.width;
+            console.log("E");
 
         } else {
             // If the player is approaching from negative X
-            player.x = entity.x - player.width;
+            console.log("F");
+            if(dx == 0 || dy/dx>.5){
+                console.log("ignored");
+            } else {
+                player.x = entity.x - player.width;
+                console.log(dy);
+            }
         }
 
         // Velocity component
-        dx = -dx * entity.restitution;
+        // dx = -dx * entity.restitution;
 
         if (Math.abs(dx) < STICKY_THRESHOLD) {
             dx = 0;
@@ -213,15 +239,18 @@ function collisionResolution(entity){
         // If the player is approaching from positive Y
         if (normalY < 0) {
             player.y = entity.y + entity.width;
-
+            console.log("G");
+            dy = 0;
         } else {
             // If the player is approaching from negative Y
             player.y = entity.y - player.height;
-            // grounded = true;
+            grounded = true;
+            dy = 0;
+            console.log("H");
         }
 
         // Velocity component
-        dy = -dy * entity.restitution;
+        // dy = -dy * entity.restitution;
         if (Math.abs(dy) < STICKY_THRESHOLD) {
             dy = 0;
         }
@@ -301,7 +330,7 @@ function drawGround(){
     context.closePath();
 }
 function gravity(){
-    if(!grounded){
+    if(dy < 20){
         dy +=1;
     }
 }
