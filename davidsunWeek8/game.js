@@ -144,13 +144,6 @@ function collisionTest(object1, object2){
     return !(b1 <= t2 || t1 >= b2 || r1 <= l2 || l1 >= r2);
 
 }
-function collisionHelper(){
-    for(let i = 0; i < level.length;i++){
-        if(collisionTest(player,level[i])){
-            collisionResolution(level[i]);
-        }
-    }
-}
 function collisionResolution(entity){
     var pMidX = player.x + player.width*.5;
     var pMidY = player.y + player.height*.5;

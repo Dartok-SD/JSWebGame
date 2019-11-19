@@ -1,0 +1,6 @@
+.part1 { width: 20rem; border: solid 2px #acacac; padding: 2rem; }
+.part1 > .part2 { width: 10rem; border: solid 4px #1b1b1b; padding: 4rem; }
+input,select { margin-bottom: 20px; }
+input[type=submit] { color: #aaa; }
+span.message { content: "";display:block}
+#confirmMsg {font-size: 80%; padding-left: 1em; }
